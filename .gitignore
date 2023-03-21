@@ -1,0 +1,3 @@
+*.log
+logs/ansible.log
+test/*
