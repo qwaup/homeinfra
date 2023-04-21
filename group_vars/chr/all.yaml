@@ -1,3 +1,6 @@
 ---
 
 chr_default_user_password: "{{ vault_chr_default_user_password }}"
+ansible_user: "{{ vault_ansible_user }}"
+ansible_ssh_pass: "{{ vault_ansible_ssh_pass }}"
+chr_user_accounts: "{{ vault_chr_user_accounts }}"

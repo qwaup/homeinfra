@@ -3,10 +3,16 @@
 - name: Lookup ssh key for "{{ item.name }}"
   ansible.builtin.set_fact:
     ssh_details:
-      username: "{{ item }}"
+      username: "{{ item.name }}"
       pub_ssh_keys: "{{ lookup('url', 'https://github.com/{}.keys'.format(item.name), split_lines=false) | split('\n') }}"
   delegate_to: localhost
   run_once: true
+  tags: add_ssh_key
+
+- name: Remove old ssh key for "{{ item.name }}"
+  community.routeros.command:
+    commands: >-
+      /user ssh-keys remove [find where user~"{{ item.name }}"]
   tags: add_ssh_key
 
 - name: Add ssh key for "{{ item.name }}"
@@ -17,4 +23,13 @@
   loop: "{{ ssh_details.pub_ssh_keys }}"
   loop_control:
     loop_var: outer_item
+  tags: add_ssh_key
+
+- name: Make sure the NEW keys are added for "{{ item.name }}"
+  community.routeros.command:
+    commands: >-
+      /user ssh-keys print where user="{{ item.name }}"
+  register: actual_ssh_keys
+  changed_when: actual_ssh_keys.stdout | regex_search( item.name )
+  failed_when: actual_ssh_keys.stdout == [""]
   tags: add_ssh_key

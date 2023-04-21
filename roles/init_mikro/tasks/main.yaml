@@ -1,10 +1,11 @@
 ---
+
 - name: 0|create_user
   ansible.builtin.include_tasks: 0.create_user.yaml
   loop: "{{ chr_user_accounts }}"
   tags: create_user
 
-- name: 1|create_ssh_file
-  ansible.builtin.include_tasks: 1.create_ssh_file.yaml
+- name: 1|add_ssh_key
+  ansible.builtin.include_tasks: 1.add_ssh_key.yaml
   loop: "{{ chr_user_accounts }}"
   tags: add_ssh_key
