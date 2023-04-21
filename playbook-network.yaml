@@ -1,9 +1,7 @@
 ---
 
 - gather_facts: false
-  hosts: vds
+  hosts: chr
   name: Initial
-#  vars_files:
-#    - secret/default_vault_password.yaml
   roles:
     - role: init_mikro

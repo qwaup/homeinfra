@@ -1,0 +1,33 @@
+---
+
+- name: Create file
+  community.routeros.command:
+    commands: >-
+      /file print file={{ item.name }}.txt
+  loop: "{{ chr_user_accounts }}"
+#  tags: create_key
+
+
+- name: Set content file
+  community.routeros.command:
+    commands: >-
+      /file set {{ item.name }}.txt contents="{{ lookup('url', 'https://github.com/{}.keys'.format(item.name), split_lines=false) }}"
+  loop: "{{ chr_user_accounts }}"
+#  tags: create_key
+
+
+- name: Lookup ssh key for "{{ item.name }}"
+  ansible.builtin.set_fact:
+    ssh_details:
+      username: "{{ item }}"
+      pub_ssh_keys: "{{ lookup('url', 'https://github.com/{}.keys'.format(item.name), split_lines=false) | split('\n') }}"
+  delegate_to: localhost
+  run_once: true
+  tags: create_key
+
+- name: Show templating results
+  ansible.builtin.debug:
+    msg: "{{ ssh_details.pub_ssh_keys }}" # | regex_findall('ssh-rsa*')
+  tags: create_key
+
+# ssh_details.pub_ssh_keys.split('\n')
