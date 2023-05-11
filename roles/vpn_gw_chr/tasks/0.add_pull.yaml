@@ -1,0 +1,7 @@
+---
+
+- name: Add address pool "{{ item.name }}"
+  community.routeros.command:
+    commands: >-
+      /ip pool add name={{ item.name }} ranges={{ item.ranges }} comment="Ansible managed"
+  tags: add_address_pool

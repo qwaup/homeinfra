@@ -31,5 +31,5 @@
       /user ssh-keys print where user="{{ item.name }}"
   register: actual_ssh_keys
   changed_when: actual_ssh_keys.stdout | regex_search( item.name )
-  failed_when: actual_ssh_keys.stdout == [""]
+  failed_when: actual_ssh_keys.stdout == [""] or actual_ssh_keys.stdout | regex_search( "bad command name add" )
   tags: add_ssh_key
