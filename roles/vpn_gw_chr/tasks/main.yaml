@@ -5,15 +5,6 @@
   loop: "{{ chr_vpn_pools }}"
   tags: add_address_pool
 
-- name: Debug
-  ansible.builtin.debug:
-    msg: >-
-      /ppp secret add name={{ item.name }} password={{ item.password | default(chr_default_user_password) }}
-      profile=vpn-profile service=l2tp local-address={{ item.local_address }} remote-address={{ item.remote_address }}
-      routes="{{ item.routes }}"
-  loop: "{{ ppp_user_accounts }}"
-  tags: debug
-
 - name: Add vpn profile
   community.routeros.command:
     commands: >-
@@ -21,7 +12,7 @@
       remote-address={{ chr_vpn_pools.0.name }} use-encryption=yes only-one=yes
   tags: add_profile
 
-- name: 1|add_ppp_secrets
-  ansible.builtin.include_tasks: 1.add_ppp_secrets.yaml
+- name: 1|configure_ppp_secrets
+  ansible.builtin.include_tasks: 1.configure_ppp_secrets.yaml
   loop: "{{ ppp_user_accounts }}"
-  tags: add_ppp_secrets
+  tags: configure_ppp_secrets

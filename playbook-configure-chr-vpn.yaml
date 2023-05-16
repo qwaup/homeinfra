@@ -1,0 +1,7 @@
+---
+
+- name: Configure chr vpn
+  gather_facts: false
+  hosts: chr001-ruvds
+  roles:
+    - role: vpn_gw_chr
