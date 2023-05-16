@@ -1,8 +1,9 @@
 ---
 
-chr_default_user_password: "{{ vault_chr_default_user_password }}"
+ansible_connection: ansible.netcommon.network_cli
+ansible_network_os: community.routeros.routeros
 ansible_user: "{{ vault_ansible_user }}"
 ansible_ssh_pass: "{{ vault_ansible_ssh_pass }}"
-chr_user_accounts: "{{ vault_chr_user_accounts }}"
+ansible_ssh_port: "{{ vault_ansible_ssh_port }}"
 chr_vpn_pools: "{{ vault_chr_vpn_pools }}"
 ppp_user_accounts: "{{ vault_ppp_user_accounts }}"

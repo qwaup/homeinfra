@@ -3,12 +3,11 @@ all:
   children:
     mikrotik:
       hosts:
-        private-chr-vds:
+        chr001-ruvds:
           ansible_ssh_host: 45.8.228.114
-          ansible_connection: ansible.netcommon.network_cli
-          ansible_network_os: community.routeros.routeros
-        gome-gw:
+        gw001-home-qwaup:
           ansible_ssh_host: 10.0.10.254
-          ansible_ssh_port: 22220
-          ansible_connection: ansible.netcommon.network_cli
-          ansible_network_os: community.routeros.routeros
+    servers:
+      hosts:
+        test-server:
+          ansible_ssh_host: 10.0.10.235
