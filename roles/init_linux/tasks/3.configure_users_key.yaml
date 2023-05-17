@@ -1,0 +1,19 @@
+---
+
+- name: Make shure the direcotry exist
+  ansible.builtin.file:
+    path: "/home/{{ item.name }}/.ssh"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: "700"
+  tags: configure_users_key
+
+- name: Template file authorized_keys
+  ansible.builtin.template:
+    src: authorized_keys.j2
+    dest: "/home/{{ item.name }}/.ssh/authorized_keys"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: "700"
+  tags: configure_users_key

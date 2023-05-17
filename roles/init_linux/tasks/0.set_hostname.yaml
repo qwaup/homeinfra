@@ -1,0 +1,16 @@
+---
+
+- name: Set a hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+    use: debian
+  tags: set_hostname
+
+- name: Add IP address in hosts file
+  ansible.builtin.lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ inventory_hostname }}$'
+    line: "{{ ansible_facts.default_ipv4.address }}    {{ inventory_hostname }}"
+    state: present
+  when: ansible_facts.default_ipv4.address is defined
+  tags: set_hostname

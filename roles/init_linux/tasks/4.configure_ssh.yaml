@@ -1,0 +1,29 @@
+---
+
+- name: Change port
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^.*Port.*'
+    line: "Port {{ default_ssh_port }}"
+  tags: configure_ssh
+
+- name: Disable root logon
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^.*PermitRootLogin.*'
+    line: "PermitRootLogin no"
+  tags: configure_ssh
+
+- name: Enable PubkeyAuthentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^.*PubkeyAuthentication.*'
+    line: "PubkeyAuthentication yes"
+  tags: configure_ssh
+
+- name: Disable PasswordAuthentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^.*PasswordAuthentication.*'
+    line: "PasswordAuthentication no"
+  tags: configure_ssh
