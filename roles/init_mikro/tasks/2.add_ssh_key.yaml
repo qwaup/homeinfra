@@ -4,7 +4,7 @@
   ansible.builtin.set_fact:
     ssh_details:
       username: "{{ item.name }}"
-      pub_ssh_keys: "{{ lookup('url', 'https://github.com/{}.keys'.format(item.name), split_lines=false) | split('\n') }}"
+      pub_ssh_keys: "{{ lookup('url', 'https://github.com/{}.keys'.format(item.name), split_lines=true).split(',') }}"
   delegate_to: localhost
   run_once: true
   tags: add_ssh_key
@@ -23,7 +23,7 @@
 - name: Create key file
   community.routeros.command:
     commands:
-      - /file print file={{ item.name }}.txt
+      - /file print file="{{ item.name }}.txt"
   tags: add_ssh_key
 
 
@@ -31,12 +31,18 @@
   community.routeros.command:
     commands:
       - /file set {{ item.name }}.txt contents="{{ outer_item }}"
-      - /user ssh-keys import user={{ item.name }} public-key-file={{ item.name }}.txt
+      - /user ssh-keys import user="{{ item.name }}" public-key-file="{{ item.name }}.txt"
   tags: add_ssh_key
   when: outer_item | regex_search('ssh-rsa')
   loop: "{{ ssh_details.pub_ssh_keys }}"
   loop_control:
     loop_var: outer_item
+
+
+# - name: Sleep for 5 seconds and continue with play
+#   ansible.builtin.wait_for:
+#     timeout: 5
+#   delegate_to: localhost
 
 #- name: Remove key file
 #  community.routeros.command:
