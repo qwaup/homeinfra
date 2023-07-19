@@ -9,27 +9,59 @@
   run_once: true
   tags: add_ssh_key
 
+- name: Debug
+  ansible.builtin.debug:
+    var: ssh_details
+  tags: add_ssh_key
+
 - name: Remove old ssh key for "{{ item.name }}"
   community.routeros.command:
     commands: >-
       /user ssh-keys remove [find where user~"{{ item.name }}"]
   tags: add_ssh_key
 
-- name: Add ssh key for "{{ item.name }}"
+- name: Create key file
   community.routeros.command:
-    commands: >-
-      /user ssh-keys add key="{{ outer_item }}" user="{{ item.name }}"
+    commands:
+      - /file print file={{ item.name }}.txt
+  tags: add_ssh_key
+
+
+- name: Set content key file
+  community.routeros.command:
+    commands:
+      - /file set {{ item.name }}.txt contents="{{ outer_item }}"
+      - /user ssh-keys import user={{ item.name }} public-key-file={{ item.name }}.txt
+  tags: add_ssh_key
   when: outer_item | regex_search('ssh-rsa')
   loop: "{{ ssh_details.pub_ssh_keys }}"
   loop_control:
     loop_var: outer_item
-  tags: add_ssh_key
 
-- name: Make sure the NEW keys are added for "{{ item.name }}"
-  community.routeros.command:
-    commands: >-
-      /user ssh-keys print where user="{{ item.name }}"
-  register: actual_ssh_keys
-  changed_when: actual_ssh_keys.stdout | regex_search( item.name )
-  failed_when: actual_ssh_keys.stdout == [""] or actual_ssh_keys.stdout | regex_search( "bad command name add" )
-  tags: add_ssh_key
+#- name: Remove key file
+#  community.routeros.command:
+#    commands:
+#      - /file remove {{ item.name }}.txt
+#  tags: add_ssh_key
+
+
+# user ssh-keys import user=qwaup public-key-file=qwaup.txt
+
+#  - name: Add ssh key for "{{ item.name }}"
+#    community.routeros.command:
+#      commands: >-
+#        /user ssh-keys add key="{{ outer_item }}" user="{{ item.name }}"
+#    when: outer_item | regex_search('ssh-rsa')
+#    loop: "{{ ssh_details.pub_ssh_keys }}"
+#    loop_control:
+#      loop_var: outer_item
+#    tags: add_ssh_key
+#
+#  - name: Make sure the NEW keys are added for "{{ item.name }}"
+#    community.routeros.command:
+#      commands: >-
+#        /user ssh-keys print where user="{{ item.name }}"
+#    register: actual_ssh_keys
+#    changed_when: actual_ssh_keys.stdout | regex_search( item.name )
+#    failed_when: actual_ssh_keys.stdout == [""] or actual_ssh_keys.stdout | regex_search( "bad command name add" )
+#    tags: add_ssh_key
