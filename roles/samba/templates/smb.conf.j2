@@ -1,0 +1,58 @@
+# Global parameters
+[global]
+        workgroup = WORKGROUP
+        log file = /var/log/samba/log.%m
+        logging = file
+        map to guest = Bad User
+        max log size = 1000
+        obey pam restrictions = Yes
+        pam password change = Yes
+        panic action = /usr/share/samba/panic-action %d
+        passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
+        passwd program = /usr/bin/passwd %u
+        server role = standalone server
+        server string = %h server (Samba, Ubuntu)
+        unix password sync = Yes
+        usershare allow guests = Yes
+        idmap config * : backend = tdb
+
+
+[printers]
+        browseable = No
+        comment = All Printers
+        create mask = 0700
+        path = /var/spool/samba
+        printable = Yes
+
+
+[print$]
+        comment = Printer Drivers
+        path = /var/lib/samba/printers
+
+[documents]
+    comment = Directory anonimus
+    path = /share/documents
+    public = yes
+    writable = yes
+    read only = no
+    guest ok = yes
+    create mask = 0777
+    directory mask = 0777
+    force create mode = 0777
+    force directory mode = 0777
+
+[home_folder]
+    comment = Folder for home archives
+    path = /share/home_folder
+    public = no
+    writable = yes
+    read only = no
+    guest ok = no
+    valid users = @home
+    create mask = 0770
+    directory mask = 0770
+    force create mode = 0770
+    force directory mode = 0770
+    force group = home
+    inherit owner = yes
+    inherit permissions = yes
