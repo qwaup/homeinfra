@@ -1,0 +1,10 @@
+---
+
+- name: Install packages "{{ item }}"
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    update_cache: true
+    cache_valid_time: 3600
+  loop:
+    - pdns-server
+    - pdns-backend-bind

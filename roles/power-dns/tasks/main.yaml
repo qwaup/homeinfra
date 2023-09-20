@@ -1,0 +1,7 @@
+---
+
+- name: 0|install_packages
+  ansible.builtin.include_tasks: 0.install_packages.yaml
+
+- name: 1|template_conf
+  ansible.builtin.include_tasks: 1.template_conf.yaml

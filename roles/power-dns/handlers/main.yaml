@@ -1,0 +1,7 @@
+---
+
+- name: Reload pdns
+  ansible.builtin.systemd:
+    name: pdns
+    state: restarted
+    enabled: true

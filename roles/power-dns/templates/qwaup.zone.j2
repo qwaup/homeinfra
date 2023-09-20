@@ -1,0 +1,28 @@
+$ORIGIN qwaup. ; base domain-name
+$TTL 360    ; default TTL for zone
+
+@         IN      SOA   ns1.qwaup. qwaup.yandex.ru. (
+
+                                2023091101 ; serial number
+
+                                360        ; refresh
+
+                                360        ; update retry
+
+                                360         ; expiry
+
+                                360         ; minimum
+
+                                )
+
+@                        IN      NS      ns1.qwaup.
+ns1                      IN      CNAME   dns01.qwaup.
+gw001-home               IN      A       10.0.10.254
+proxmox01                IN      A       10.0.10.253
+files                    IN      A       10.0.10.252
+keenetic                 IN      A       10.0.10.251
+tl                       IN      A       10.0.10.250
+dns01                    IN      A       10.0.10.249
+git01                    IN      A       10.0.10.248
+doc01                    IN      A       10.0.10.247
+taw001                   IN      A       10.0.10.151

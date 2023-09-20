@@ -1,0 +1,10 @@
+zone "qwaup." {
+  type master;
+  file "/etc/powerdns/qwaup.zone";
+  notify yes;
+};
+zone "10.0.10.in-addr.arpa" {
+  type master;
+  file "/etc/powerdns/qwaup-rr.zone";
+  notify yes;
+};

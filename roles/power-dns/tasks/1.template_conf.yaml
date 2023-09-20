@@ -1,0 +1,20 @@
+---
+
+- name: Make shure the direcotry exist
+  ansible.builtin.file:
+    path: "/etc/powerdns"
+    state: directory
+
+- name: Template configuration files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: pdns
+    group: pdns
+    mode: "755"
+  loop:
+    - { src: 'pdns.conf.j2', dest: '/etc/powerdns/pdns.conf' }
+    - { src: 'named.conf.j2', dest: '/etc/powerdns/named.conf' }
+    - { src: 'qwaup.zone.j2', dest: '/etc/powerdns/qwaup.zone' }
+    - { src: 'qwaup-rr.zone.j2', dest: '/etc/powerdns/qwaup-rr.zone' }
+  notify: Reload pdns
