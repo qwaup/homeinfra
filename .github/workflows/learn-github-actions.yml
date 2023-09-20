@@ -8,3 +8,8 @@ jobs:
       - uses: actions/checkout@v4
       - run: pwd
       - run: ls -lah
+  test-jobs2:
+    runs-on: self-hosted
+    steps:
+      - run: pwd
+      - run: ls -lah
