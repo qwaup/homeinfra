@@ -2,6 +2,6 @@
 
 - name: Configure chr vpn
   gather_facts: false
-  hosts: chr001-ruvds
+  hosts: vpn.qwaup.7357.ru
   roles:
     - role: vpn_gw_chr

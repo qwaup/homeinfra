@@ -3,7 +3,7 @@ all:
   children:
     mikrotik:
       hosts:
-        chr001-ruvds.qwaup:
+        vpn.qwaup.7357.ru:
         gw001-home.qwaup:
     servers:
       hosts:
