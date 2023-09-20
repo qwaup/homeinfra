@@ -1,0 +1,12 @@
+---
+
+- name: Install packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    autoremove: true
+    update_cache: true
+    cache_valid_time: 3600
+  loop:
+    - proxmox-ve
+    - postfix
+    - open-iscsi
