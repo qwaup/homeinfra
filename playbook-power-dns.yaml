@@ -1,0 +1,9 @@
+---
+
+- name: Initial role for install and configure pdns on debian
+  gather_facts: false
+  hosts: dns01.qwaup
+  become: true
+  become_method: sudo
+  roles:
+    - role: power_dns
