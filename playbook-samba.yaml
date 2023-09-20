@@ -2,7 +2,7 @@
 
 - name: Initial role for samba server
   gather_facts: true
-  hosts: share.home
+  hosts: files.qwaup
   become: true
   become_method: ansible.builtin.sudo
   roles:
