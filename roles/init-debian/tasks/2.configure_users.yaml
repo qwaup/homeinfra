@@ -1,0 +1,19 @@
+---
+
+- name: Remove bad users "{{ item.name }}"
+  ansible.builtin.user:
+    name: "{{ item }}"
+    password: "{{ item.password | default(default_user_password) | password_hash }}"
+    state: absent
+  when: not item.account_enabled
+  tags: configure_user
+
+- name: Add local users "{{ item.name }}"
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    password: "{{ item.password | default(default_user_password) | password_hash }}"
+    groups: sudo
+    shell: /bin/bash
+    state: present
+  when: item.account_enabled
+  tags: configure_user
