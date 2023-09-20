@@ -1,7 +1,0 @@
----
-
-- name: Initial role for mikrotik
-  gather_facts: false
-  hosts: mikrotik
-  roles:
-    - role: init_mikro

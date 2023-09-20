@@ -1,7 +1,0 @@
----
-
-- name: Set hostname "{{ inventory_hostname }}"
-  community.routeros.command:
-    commands: >-
-      /system identity set name="{{ inventory_hostname }}"
-  tags: set_hostname

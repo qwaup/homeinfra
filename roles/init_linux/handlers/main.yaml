@@ -1,5 +1,0 @@
----
-
-- name: Upgrade packages
-  ansible.builtin.apt:
-    upgrade: full

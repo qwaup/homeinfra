@@ -1,8 +1,0 @@
----
-
-- gather_facts: false
-  hosts: gome-gw
-  name: Initial
-  roles:
-    - role: init_mikro
-#    - role: vpn_gw_chr
