@@ -1,0 +1,70 @@
+---
+
+- name: Install packages "{{ item }}"
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  loop:
+    - btrfs-progs
+    - samba
+  notify: Restart service smbd
+
+- name: Create current groups for samba sharing "{{ item }}"
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ samba_groups }}"
+
+- name: Remove users to samba
+  ansible.builtin.command: smbpasswd -x "{{ item.name }}"
+  register: result
+  become: true
+  ignore_errors: true
+  when: not item.account_enabled
+  loop: "{{ samba_accounts }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Remove users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    state: absent
+  when: not item.account_enabled
+  loop: "{{ samba_accounts }}"
+
+- name: Add users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    comment: "{{ item.description | default('Not have') }}"
+    password: "{{ item.password | default(default_user_password) | password_hash }}"
+    groups: "{{ item.groups }}"
+    append: false
+    state: present
+    update_password: always
+    create_home: false
+    shell: /sbin/nologin
+  when: item.account_enabled
+  loop: "{{ samba_accounts }}"
+
+- name: Add users to samba
+  ansible.builtin.shell:
+    (echo "{{ item.password | default(default_user_password) }}"; echo "{{ item.password | default(default_user_password) }}" ) | smbpasswd -a "{{ item.name }}"
+  become: true
+  ignore_errors: true
+  when: item.account_enabled
+  loop: "{{ samba_accounts }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Template config
+  ansible.builtin.template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: '0644'
+    validate: testparm -s %s
+    backup: true
+  notify: Restart service smbd

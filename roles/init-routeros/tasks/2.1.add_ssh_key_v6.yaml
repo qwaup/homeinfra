@@ -1,0 +1,46 @@
+---
+
+- name: Lookup ssh key for "{{ item.name }}"
+  ansible.builtin.set_fact:
+    ssh_details:
+      username: "{{ item.name }}"
+      pub_ssh_keys: "{{ lookup('url', 'https://github.com/{}.keys'.format(item.name)).split(',') }}"
+  delegate_to: localhost
+  run_once: true
+  tags: add_ssh_key
+
+- name: Remove old ssh key for "{{ item.name }}"
+  community.routeros.command:
+    commands: >-
+      /user ssh-keys remove [find where user~"{{ item.name }}"]
+  tags: add_ssh_key
+
+- name: Create key file
+  community.routeros.command:
+    commands:
+      - /file print file="{{ item.name }}.txt"
+  tags: add_ssh_key
+
+- name: Remove old ssh key for "{{ item.name }}"
+  community.routeros.command:
+    commands: >-
+      /user ssh-keys remove [find where user~"{{ item.name }}"]
+  tags: add_ssh_key
+
+- name: Set content key file for "{{ item.name }}"
+  community.routeros.command:
+    commands:
+      - /file set {{ item.name }}.txt contents="{{ outer_item }}"
+      - /user ssh-keys import user="{{ item.name }}" public-key-file="{{ item.name }}.txt"
+  ignore_errors: true
+  tags: add_ssh_key
+  when: outer_item | regex_search('ssh-rsa')
+  loop: "{{ ssh_details.pub_ssh_keys }}"
+  loop_control:
+    loop_var: outer_item
+
+- name: Remove key file
+  community.routeros.command:
+    commands:
+      - /file remove {{ item.name }}.txt
+  tags: add_ssh_key

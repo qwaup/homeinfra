@@ -1,0 +1,6 @@
+---
+
+- name: Initial role for debian
+  hosts: proxmox01.home
+  roles:
+    - role: init-proxmox

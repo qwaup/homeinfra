@@ -1,0 +1,7 @@
+---
+
+administrator_accounts: "{{ vault_administrator_accounts }}"
+default_user_password: "{{ vault_default_user_password }}"
+default_ssh_port: "{{ vault_default_ssh_port }}"
+ansible_ssh_port: "{{ vault_ansible_ssh_port }}"
+become_user: "{{ vault_become_user }}"

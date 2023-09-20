@@ -1,0 +1,9 @@
+---
+
+- name: Initial role for samba server
+  gather_facts: true
+  hosts: files.qwaup
+  become: true
+  become_method: ansible.builtin.sudo
+  roles:
+    - role: samba

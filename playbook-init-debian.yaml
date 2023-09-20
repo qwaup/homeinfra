@@ -1,0 +1,9 @@
+---
+
+- name: Initial role for debian
+  gather_facts: false
+  hosts: servers
+  become: true
+  become_method: sudo
+  roles:
+    - role: init-debian

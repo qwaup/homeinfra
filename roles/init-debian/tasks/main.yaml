@@ -1,0 +1,35 @@
+---
+
+- name: 0|set_hostname
+  ansible.builtin.include_tasks: 0.set_hostname.yaml
+  tags: set_hostname
+
+- name: 1|install_packages
+  ansible.builtin.include_tasks: 1.install_packages.yaml
+
+- name: 2|configure_user
+  ansible.builtin.include_tasks: 2.configure_users.yaml
+  loop: "{{ administrator_accounts }}"
+  tags:
+    - configure_user
+    - configure_users_key
+
+- name: 3|configure_users_key
+  ansible.builtin.include_tasks: 3.configure_users_key.yaml
+  loop: "{{ administrator_accounts }}"
+  tags:
+    - configure_users_key
+
+- name: 4|configure_ssh
+  ansible.builtin.include_tasks: 4.configure_ssh.yaml
+  tags: configure_ssh
+
+- name: 5|configure_sudo
+  ansible.builtin.include_tasks: 5.configure_sudo.yaml
+
+- name: Restart sshd
+  ansible.builtin.systemd:
+    name: sshd
+    daemon_reload: true
+    state: restarted
+    enabled: true

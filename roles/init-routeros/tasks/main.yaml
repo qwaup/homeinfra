@@ -1,0 +1,49 @@
+---
+
+- name: 0|set_hostname
+  ansible.builtin.include_tasks: 0.set_hostname.yaml
+  tags: set_hostname
+
+- name: Get ROS version
+  community.routeros.command:
+    commands: put [system resource get version]
+  register: ROSversion
+
+- name: 1|configure_user
+  ansible.builtin.include_tasks: 1.configure_user.yaml
+  tags: configure_user
+
+- name: 2|add_ssh_key_v7+
+  ansible.builtin.include_tasks: 2.add_ssh_key_v7+.yaml
+  loop: "{{ administrator_accounts }}"
+  when: item.account_enabled and ROSversion.stdout | regex_search('7\\.*')
+  tags:
+    - add_ssh_key
+    - configure_user
+
+- name: 2|add_ssh_key_v6
+  ansible.builtin.include_tasks: 2.1.add_ssh_key_v6.yaml
+  loop: "{{ administrator_accounts }}"
+  when: item.account_enabled and ROSversion.stdout | regex_search('6\\.*')
+  tags:
+    - add_ssh_key
+    - configure_user
+
+- name: 3|change_conf_services
+  community.routeros.command:
+    commands:
+      - ip service set telnet disabled=yes
+      - ip service set ftp disabled=yes
+      - ip service set www disabled=yes
+      - ip service set ssh port=22220
+      - ip service set www-ssl disabled=yes
+      - ip service set api disabled=yes
+      - ip service set winbox disabled=yes
+      - ip service set api-ssl disabled=yes
+  tags:
+    - configure_service
+
+- name: 3|change_conf_services
+  community.routeros.command:
+    commands: user disable admin
+  tags: configure_user

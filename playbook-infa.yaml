@@ -1,7 +1,0 @@
----
-
-- gather_facts: true
-  hosts: test-server
-  name: Initial
-  roles:
-    - role: init_debian

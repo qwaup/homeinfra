@@ -1,0 +1,17 @@
+---
+
+- name: Raw install python
+  ansible.builtin.raw: apt-get update; apt-get -y install python3
+  changed_when: true
+
+- name: 0|adapt_sources
+  ansible.builtin.include_tasks: 0.adapt_sources.yaml
+
+- name: 1|install_packages
+  ansible.builtin.include_tasks: 1.install_packages.yaml
+
+- name: 2|remove_packages
+  ansible.builtin.include_tasks: 2.remove_packages.yaml
+
+- name: Reboot
+  ansible.builtin.reboot:

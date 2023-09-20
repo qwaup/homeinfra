@@ -3,11 +3,14 @@ all:
   children:
     mikrotik:
       hosts:
-        chr001-ruvds:
-          ansible_ssh_host: 45.8.228.114
-        gw001-home-qwaup:
-          ansible_ssh_host: 10.0.10.254
+        vpn.qwaup.7357.ru:
+        gw001-home.qwaup:
     servers:
       hosts:
-        test-server:
-          ansible_ssh_host: 10.0.10.235
+        proxmox01.qwaup:
+        dns01.qwaup:
+        git01.qwaup:
+        doc01.qwaup:
+    smb:
+      hosts:
+        files.qwaup:

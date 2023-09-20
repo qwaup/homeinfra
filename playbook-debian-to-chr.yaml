@@ -1,0 +1,36 @@
+---
+- name: Install chr over debian
+  hosts:
+  gather_facts: false
+  tasks:
+
+    - name: Raw install python
+      ansible.builtin.raw: apt-get update; apt-get -y install python3
+      changed_when: true
+
+    - name: Get facts
+      ansible.builtin.setup:
+
+    - name: Install unzip
+      ansible.builtin.apt:
+        name: unzip
+
+    - name: Download chr-7.11.img.zip
+      ansible.builtin.get_url:
+        url: https://download.mikrotik.com/routeros/7.11/chr-7.11.img.zip
+        dest: /tmp/chr-7.11.img.zip
+        mode: '0755'
+
+    - name: Extract foo.tgz into /var/lib/foo
+      ansible.builtin.unarchive:
+        src: /tmp/chr-7.11.img.zip
+        dest: /tmp
+        mode: '0755'
+        remote_src: true
+
+    - name: Debug address and gateway
+      ansible.builtin.debug:
+        msg: "ip4 address is - {{ ansible_facts.default_ipv4.address }}, gateway is - {{ ansible_facts.default_ipv4.gateway }}"
+
+# После прогона запустить команды на запись и ребут
+# echo "1" > /proc/sys/kernel/sysrq && echo "u" > /proc/sysrq-trigger && dd if=/tmp/chr-7.11.img of=/dev/sda bs=4M oflag=sync && echo "b" > /proc/sysrq-trigger
