@@ -5,10 +5,21 @@ run-name: Ansible and YAML checking
 on: [workflow_dispatch, push, pull_request]
 
 jobs:
+  test-secrets:
+    runs-on: self-hosted
+    steps:
+      - name: Hello world action
+        with: # Set the secret as an input
+          super_secret: ${{ secrets.SuperSecret }}
+        env: # Or as an environment variable
+          super_secret: ${{ secrets.SuperSecret }}
+      - run: echo $super_secret
+
   ansible-syntax-check:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
+      - run: echo $super_secret
       - run: pwd
       - run: echo $PATH
       - run: which yamllint
