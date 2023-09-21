@@ -11,7 +11,9 @@ jobs:
       - uses: actions/checkout@v4
       - run: pwd
       - run: ls -lah
-      - run: echo $super_secret > secret/key.yaml
+      - run: echo $SUPERSECRET > secret/key.yaml
+        env: # Or as an environment variable
+          SUPERSECRET: ${{ secrets.SUPERSECRET }}
       - run: ansible-playbook --syntax-check *.yaml
       - run: ansible-lint -v *.yml
       - run: yamllint .
