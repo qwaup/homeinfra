@@ -10,6 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: pwd
+      - run: which yamllint
+      - run: echo $PATH
       - run: ansible-playbook --syntax-check *.yaml
   yamllint:
     runs-on: self-hosted
