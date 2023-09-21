@@ -19,7 +19,7 @@ jobs:
       - run: yamllint .
   cleanup:
     runs-on: self-hosted
-  #  if: ${{ always() }}
+    if: ${{ always() }}
     needs: [syntax-check]
     steps:
       - run: pwd
