@@ -9,7 +9,7 @@ ignore:
   - logs
   - secret
   - /group_vars/all/vault.yaml
-  - /.github/workflows/learn-github-actions.yml
+  - /.github/workflows/
 
 rules:
   anchors: enable
