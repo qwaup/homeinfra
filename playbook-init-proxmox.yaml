@@ -1,6 +1,6 @@
 ---
 
 - name: Initial role for debian
-  hosts: proxmox01.home
+  hosts: proxmox01.qwaup
   roles:
     - role: init-proxmox

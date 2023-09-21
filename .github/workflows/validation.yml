@@ -1,0 +1,18 @@
+---
+
+name: Validation actions
+run-name: Ansible and YAML checking
+on: [workflow_dispatch, push, pull_request]
+
+jobs:
+  ansible-syntax-check:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - run: pwd
+      - run: ansible-playbook --syntax-check *.yaml
+  yamllint:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - run: yamllint .

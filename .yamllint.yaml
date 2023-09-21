@@ -1,0 +1,48 @@
+---
+
+yaml-files:
+  - '*.yaml'
+  - '*.yml'
+
+ignore:
+  - lib
+  - logs
+  - secret
+  - /group_vars/all/vault.yaml
+  - /.github/workflows/learn-github-actions.yml
+
+rules:
+  anchors: enable
+  braces:
+    forbid: false
+    min-spaces-inside: 1
+    max-spaces-inside: 2
+    min-spaces-inside-empty: -1
+    max-spaces-inside-empty: -1
+  brackets: enable
+  colons: enable
+  commas: enable
+  comments:
+    level: warning
+  comments-indentation:
+    level: warning
+  document-end: disable
+  document-start:
+    level: warning
+  empty-lines: enable
+  empty-values: disable
+  float-values: disable
+  hyphens: enable
+  indentation: enable
+  key-duplicates: enable
+  key-ordering: disable
+  line-length:
+    max: 160
+    allow-non-breakable-words: true
+  new-line-at-end-of-file: enable
+  new-lines: enable
+  octal-values: disable
+  quoted-strings: disable
+  trailing-spaces: enable
+  truthy:
+    level: warning
