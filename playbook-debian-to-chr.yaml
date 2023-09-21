@@ -1,6 +1,6 @@
 ---
 - name: Install chr over debian
-  hosts:
+  hosts: test
   gather_facts: false
   tasks:
 
@@ -30,7 +30,8 @@
 
     - name: Debug address and gateway
       ansible.builtin.debug:
-        msg: "ip4 address is - {{ ansible_facts.default_ipv4.address }}, gateway is - {{ ansible_facts.default_ipv4.gateway }}"
+        msg: >-
+          "ip4 address is - {{ ansible_facts.default_ipv4.address }}, gateway is - {{ ansible_facts.default_ipv4.gateway }}"
 
 # После прогона запустить команды на запись и ребут
 # echo "1" > /proc/sys/kernel/sysrq && echo "u" > /proc/sysrq-trigger && dd if=/tmp/chr-7.11.img of=/dev/sda bs=4M oflag=sync && echo "b" > /proc/sysrq-trigger

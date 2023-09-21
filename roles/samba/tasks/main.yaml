@@ -22,6 +22,7 @@
   register: result
   become: true
   ignore_errors: true
+  changed_when: true
   when: not item.account_enabled
   loop: "{{ samba_accounts }}"
   loop_control:
@@ -49,10 +50,10 @@
   loop: "{{ samba_accounts }}"
 
 - name: Add users to samba
-  ansible.builtin.shell:
+  ansible.builtin.command:
     (echo "{{ item.password | default(default_user_password) }}"; echo "{{ item.password | default(default_user_password) }}" ) | smbpasswd -a "{{ item.name }}"
   become: true
-  ignore_errors: true
+  changed_when: true
   when: item.account_enabled
   loop: "{{ samba_accounts }}"
   loop_control:

@@ -1,2 +1,4 @@
+---
+
 samba_accounts: "{{ vault_samba_accounts }}"
 samba_groups: "{{ vault_samba_groups }}"
