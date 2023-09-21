@@ -7,7 +7,7 @@
 - name: Get ROS version
   community.routeros.command:
     commands: put [system resource get version]
-  register: ROSversion
+  register: rosversion
 
 - name: 1|configure_user
   ansible.builtin.include_tasks: 1.configure_user.yaml
@@ -16,7 +16,7 @@
 - name: 2|add_ssh_key_v7+
   ansible.builtin.include_tasks: 2.add_ssh_key_v7+.yaml
   loop: "{{ administrator_accounts }}"
-  when: item.account_enabled and ROSversion.stdout | regex_search('7\\.*')
+  when: item.account_enabled and rosversion.stdout | regex_search('7\\.*')
   tags:
     - add_ssh_key
     - configure_user
@@ -24,7 +24,7 @@
 - name: 2|add_ssh_key_v6
   ansible.builtin.include_tasks: 2.1.add_ssh_key_v6.yaml
   loop: "{{ administrator_accounts }}"
-  when: item.account_enabled and ROSversion.stdout | regex_search('6\\.*')
+  when: item.account_enabled and rosversion.stdout | regex_search('6\\.*')
   tags:
     - add_ssh_key
     - configure_user

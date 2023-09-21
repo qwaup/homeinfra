@@ -4,6 +4,6 @@
   gather_facts: false
   hosts: dns01.qwaup
   become: true
-  become_method: sudo
+  become_method: ansible.builtin.sudo
   roles:
     - role: power-dns

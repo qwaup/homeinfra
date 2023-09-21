@@ -32,7 +32,6 @@
     commands:
       - /file set {{ item.name }}.txt contents="{{ outer_item }}"
       - /user ssh-keys import user="{{ item.name }}" public-key-file="{{ item.name }}.txt"
-  ignore_errors: true
   tags: add_ssh_key
   when: outer_item | regex_search('ssh-rsa')
   loop: "{{ ssh_details.pub_ssh_keys }}"

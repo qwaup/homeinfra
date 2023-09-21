@@ -4,6 +4,6 @@
   gather_facts: false
   hosts: servers
   become: true
-  become_method: sudo
+  become_method: ansible.builtin.sudo
   roles:
     - role: init-debian

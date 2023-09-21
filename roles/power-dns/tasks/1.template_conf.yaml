@@ -4,6 +4,7 @@
   ansible.builtin.file:
     path: "/etc/powerdns"
     state: directory
+    mode: "755"
 
 - name: Template configuration files
   ansible.builtin.template:
