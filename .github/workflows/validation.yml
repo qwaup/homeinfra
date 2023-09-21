@@ -15,7 +15,7 @@ jobs:
         env: # Or as an environment variable
           SUPERSECRET: ${{ secrets.SUPERSECRET }}
       - run: ansible-playbook --syntax-check *.yaml
-      - run: ansible-lint -v *.yml
+      - run: ansible-lint -v *.yaml
       - run: yamllint .
   cleanup:
     runs-on: self-hosted
