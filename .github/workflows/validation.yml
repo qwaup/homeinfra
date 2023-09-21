@@ -13,7 +13,7 @@ jobs:
           super_secret: ${{ secrets.SuperSecret }}
         env: # Or as an environment variable
           super_secret: ${{ secrets.SuperSecret }}
-      - run: echo $super_secret
+        run: echo $super_secret
 
   ansible-syntax-check:
     runs-on: self-hosted
