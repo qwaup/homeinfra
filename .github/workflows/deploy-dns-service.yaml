@@ -13,17 +13,23 @@ jobs:
   predeploy-dns:
     runs-on: self-hosted
     steps:
-      - run: echo $SUPERSECRET > secret/key.yaml
+      - run: echo $SUPERSECRET > secret/pass.yaml
         env:
           SUPERSECRET: ${{ secrets.SUPERSECRET }}
-      - run: ansible-playbook playbook-power-dns.yaml --diff --check
-      - run: rm -rfv secret/key.yaml
+      - run: echo $SSH_SECRET_KEY > secret/key.yaml && chmod 700 secret/key.yaml
+        env:
+          SSH_SECRET_KEY: ${{ secrets.SSH_SECRET_KEY }}
+      - run: ansible-playbook --key-file secret/key.yaml playbook-power-dns.yaml --diff --check
+      - run: rm -rfv secret/*.yaml
   deploy-dns:
     runs-on: self-hosted
     needs: [predeploy-dns]
     steps:
-      - run: echo $SUPERSECRET > secret/key.yaml
+      - run: echo $SUPERSECRET > secret/pass.yaml
         env:
           SUPERSECRET: ${{ secrets.SUPERSECRET }}
-      - run: ansible-playbook playbook-power-dns.yaml --diff
-      - run: rm -rfv secret/key.yaml
+      - run: echo $SSH_SECRET_KEY > secret/key.yaml && chmod 700 secret/key.yaml
+        env:
+          SSH_SECRET_KEY: ${{ secrets.SSH_SECRET_KEY }}
+      - run: ansible-playbook --key-file secret/key.yaml playbook-power-dns.yaml --diff
+      - run: rm -rfv secret/*.yaml

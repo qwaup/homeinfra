@@ -9,12 +9,10 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
-      - run: pwd
-      - run: ls -lah
-      - run: echo $SUPERSECRET > secret/key.yaml
+      - run: echo $SUPERSECRET > secret/pass.yaml
         env:
           SUPERSECRET: ${{ secrets.SUPERSECRET }}
       - run: ansible-playbook --syntax-check *.yaml
       - run: ansible-lint -v *.yaml
       - run: yamllint .
-      - run: rm -rfv secret/key.yaml
+      - run: rm -rfv secret/*.yaml
