@@ -6,8 +6,8 @@ on:
   push:
     branches:
       - cd_dns
-  paths:
-    - 'roles/power-dns/**'
+    paths:
+      - 'roles/power-dns/**'
 
 jobs:
   predeploy-dns:
