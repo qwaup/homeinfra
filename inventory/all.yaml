@@ -18,3 +18,4 @@ all:
     tested:
       hosts:
         test:
+          ansible_ssh_host: 10.0.10.50
