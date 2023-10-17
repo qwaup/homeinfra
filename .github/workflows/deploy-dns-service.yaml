@@ -15,10 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: echo $SUPERSECRET > secret/pass.yaml
-        with:
+        env:
           SUPERSECRET: ${{ secrets.SUPERSECRET }}
       - run: echo $SSH_SECRET_KEY > secret/key.yaml && chmod 600 secret/key.yaml
-        with:
+        env:
           SSH_SECRET_KEY: ${{ secrets.SSH_SECRET_KEY }}
       - run: ansible-playbook --key-file secret/key.yaml playbook-power-dns.yaml --diff --check
 #      - run: rm -rfv secret/*.yaml
@@ -28,10 +28,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: echo $SUPERSECRET > secret/pass.yaml
-        with:
+        env:
           SUPERSECRET: ${{ secrets.SUPERSECRET }}
       - run: echo $SSH_SECRET_KEY > secret/key.yaml && chmod 700 secret/key.yaml
-        with:
+        env:
           SSH_SECRET_KEY: ${{ secrets.SSH_SECRET_KEY }}
       - run: ansible-playbook --key-file secret/key.yaml playbook-power-dns.yaml --diff
 #      - run: rm -rfv secret/*.yaml
