@@ -14,6 +14,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
+      - run: pwd
       - run: echo $SUPERSECRET > secret/pass.yaml
         env:
           SUPERSECRET: ${{ secrets.SUPERSECRET }}
@@ -27,6 +28,7 @@ jobs:
     needs: [predeploy-dns]
     steps:
       - uses: actions/checkout@v4
+      - run: pwd
       - run: echo $SUPERSECRET > secret/pass.yaml
         env:
           SUPERSECRET: ${{ secrets.SUPERSECRET }}
