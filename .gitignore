@@ -1,4 +1,4 @@
 *.log
 logs/ansible.log
 .vscode/*
-secret/key*
+secret/*

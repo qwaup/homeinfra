@@ -1,0 +1,33 @@
+---
+
+name: Deploy service powerdns
+run-name: Deploy dns service
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'roles/power-dns/**'
+
+jobs:
+  predeploy-dns:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - run: pwd
+      - run: "echo $SUPERSECRET > secret/pass.yaml"
+        env:
+          SUPERSECRET: ${{ secrets.SUPERSECRET }}
+      - run: ansible-playbook playbook-power-dns.yaml --diff --check
+      - run: rm -rfv secret/*.yaml
+  deploy-dns:
+    runs-on: self-hosted
+    needs: [predeploy-dns]
+    steps:
+      - uses: actions/checkout@v4
+      - run: pwd
+      - run: echo $SUPERSECRET > secret/pass.yaml
+        env:
+          SUPERSECRET: ${{ secrets.SUPERSECRET }}
+      - run: ansible-playbook playbook-power-dns.yaml --diff
+      - run: rm -rfv secret/*.yaml

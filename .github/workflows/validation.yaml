@@ -2,24 +2,17 @@
 
 name: Validation actions
 run-name: Ansible and YAML checking
-on: [workflow_dispatch, push, pull_request]
+on: [push, pull_request]
 
 jobs:
   syntax-check:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
-      - run: pwd
-      - run: ls -lah
-      - run: echo ${{ secrets.SUPERSECRET }} > secret/key.yaml
+      - run: echo $SUPERSECRET > secret/pass.yaml
+        env:
+          SUPERSECRET: ${{ secrets.SUPERSECRET }}
       - run: ansible-playbook --syntax-check *.yaml
       - run: ansible-lint -v *.yaml
       - run: yamllint .
-  cleanup:
-    runs-on: self-hosted
-    if: ${{ always() }}
-    needs: [syntax-check]
-    steps:
-      - run: pwd
-      - run: ls -lah
-      - run: rm -rfv secret/key.yaml
+      - run: rm -rfv secret/*.yaml
