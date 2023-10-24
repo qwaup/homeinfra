@@ -2,7 +2,7 @@
 
 name: Validation actions
 run-name: Ansible and YAML checking
-on: [workflow_dispatch, push, pull_request]
+on: [push, pull_request]
 
 jobs:
   syntax-check:

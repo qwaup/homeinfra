@@ -5,7 +5,7 @@ run-name: Deploy dns service
 on:
   push:
     branches:
-      - cd_dns
+      - main
     paths:
       - 'roles/power-dns/**'
 
